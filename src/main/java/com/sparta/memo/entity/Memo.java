@@ -25,6 +25,9 @@ public class Memo {
         this.contents = requestDto.getContents();
     }
 
+    // 변경할 데이터(requestDto) 받아와서 변경
+    // set 메서드로 변경하는 게 아니라 update 메서드를 만들어서 수정
+    // 변경 감지 -> 영속성 컨테스트가 존재해야 함
     public void update(MemoRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
