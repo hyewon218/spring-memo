@@ -55,7 +55,8 @@ public class MemoService {
         // stream 에서 memo 가 하나씩 빠져갈 거고 map 에 의해서 변환이 될 건데
         // MemoResponseDto 의 생성자 중에서 Memo 를 파라미터로 가지고 있는 생성자가 호출이 되고
         // 그게 하나씩 변환이 되면서 그 뭉덩이를 List 타입으로 바꿔준다.
-        return memoRepository.findAll().stream().map(MemoResponseDto::new).toList();
+        // findAllByOrderByModifiedAtDesc : 직접 만든 메서드
+        return memoRepository.findAllByOrderByModifiedAtDesc().stream().map(MemoResponseDto::new).toList();
     }
 
     // 부모메서드에 transaction 없어서 추가
