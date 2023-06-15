@@ -3,11 +3,14 @@ package com.sparta.memo.repository;
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.entity.Memo;
+import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +31,7 @@ public class MemoRepository {
     public MemoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     // 파라미터로 메모 받아 옴
     public Memo save(Memo memo) {
         // DB 저장
@@ -93,5 +97,16 @@ public class MemoRepository {
                 return null;
             }
         }, id);
+    }
+
+    // 부모메서드에 트랜잭션이 존재한다면 자식메서드의 트랜잭션은 부모메서드의 트랜잭션에 합류하게 된다. (트랜잭션이 쭉 이어지게 된다. 부모메서드까지 끝나고 commit)
+    @Transactional(propagation = Propagation.REQUIRED) // 변경감지 -> update 쿼리 실행 / REQUIRED : 기본
+    public Memo createMemo(EntityManager em) { // 부모 메서드(test3()) 에서 보내준 EntityManager 받아서 사용
+        Memo memo = em.find(Memo.class, 1); //1번 @Transactional 테스트 중! Robbert 가지고 옴
+        memo.setUsername("Robbert"); // 데이터 바꿔줌
+        memo.setContents("@Transactional 전파 테스트 중! 2");// 데이터 바꿔줌
+
+        System.out.println("createMemo 메서드 종료");
+        return memo;
     }
 }
