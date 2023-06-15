@@ -10,11 +10,14 @@ import java.util.List;
 
 public class MemoService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoRepository memoRepository;
 
+    // MemoService가 생성자를 통해 생성이 될 때 파라미터로 jdbcTemplate 받아오고
     public MemoService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        // 여기서 MemoRepository 를 딱 하나 만들어 준다.
+        this.memoRepository = new MemoRepository(jdbcTemplate);
     }
+
     // 반환타입이 Controller 메서드와 동일해야 한다.
     public MemoResponseDto createMemo(MemoRequestDto requestDto) {
         // RequestDto -> Entity
@@ -22,7 +25,6 @@ public class MemoService {
         Memo memo = new Memo(requestDto);
 
         // DB 저장
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 메모 한 줄 저장 후 Momo 반환
         Memo saveMemo = memoRepository.save(memo);
 
@@ -34,12 +36,10 @@ public class MemoService {
 
     public List<MemoResponseDto> getMemos() {
         // DB 조회
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         return memoRepository.findAll();
     }
 
     public Long updateMemo(Long id, MemoRequestDto requestDto) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
         if (memo != null) {
@@ -53,7 +53,6 @@ public class MemoService {
     }
 
     public Long deleteMemo(Long id) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
         if (memo != null) {
