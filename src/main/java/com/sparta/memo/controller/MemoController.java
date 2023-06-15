@@ -11,13 +11,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class MemoController {
-
+// MemoController > MemoService > MemoRepository
     private final MemoService memoService;
 
     // Controller의 역할 : 클라이언트의 요청을 받고 클라이언트의 요청을 Service에 전달한다.
     // 받아 온 데이터가 있다면 그 데이터도 함께 전달한다.
-    public MemoController(JdbcTemplate jdbcTemplate) {
-        this.memoService = new MemoService(jdbcTemplate);
+    // 만들어진 MemoService 를 외부에서 파라미터로 전달받아서 집어 넣는다.
+    public MemoController(MemoService memoService) {
+        // MemoController가 MemoController 직접 만들고 있다.(제어의 흐름 : MemoController > memoService)
+        // this.memoService = new MemoService(jdbcTemplate);
+
+        // 제어의 흐름 : memoService > MemoController
+        this.memoService = memoService;
     }
 
     @PostMapping("/memos")

@@ -19,6 +19,10 @@ public class MemoRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    // JdbcTemplate을 생성자 파라미터로 받아와서 만들어지는 MemoRepository를
+    // 어떤 외부에서 만들어 가지고 Service에 집어넣고
+    // 또 그걸 받은 MemoService 완성된 MemoService 를
+    // Controller 에 파라미터에 의해서 전달 받아서 주입 받으면 된다.
     public MemoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

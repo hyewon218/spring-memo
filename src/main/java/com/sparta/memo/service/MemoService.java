@@ -12,10 +12,14 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
 
-    // MemoService가 생성자를 통해 생성이 될 때 파라미터로 jdbcTemplate 받아오고
-    public MemoService(JdbcTemplate jdbcTemplate) {
+    // 만들어진 MemoRepository를 파라미터로 전달받아서 집어 넣는다.
+    public MemoService(MemoRepository memoRepository) {
         // 여기서 MemoRepository 를 딱 하나 만들어 준다.
-        this.memoRepository = new MemoRepository(jdbcTemplate);
+        // MemoService가 MemoRepository를 직접 만들고 있다.(제어의 흐름 : MemoService >MemoRepository)
+        // this.memoRepository = new MemoRepository(jdbcTemplate);
+
+        // 제어의 흐름 : MemoRepository > MemoService
+        this.memoRepository = memoRepository;
     }
 
     // 반환타입이 Controller 메서드와 동일해야 한다.
