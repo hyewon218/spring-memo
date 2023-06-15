@@ -4,15 +4,23 @@ import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.entity.Memo;
 import com.sparta.memo.repository.MemoRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+//@Component // Bean 객체 등록
+@Service // ‘Bean’ 클래스의 역할을 명시
+// [Lombok 주입]
+// @RequiredArgsConstructor // final로 선언된 멤버 변수를 파라미터로 사용하여 생성자를 자동으로 생성한다.
 public class MemoService {
 
+    // MemoService Bean 객체 받아서 사용하고 있음.
     private final MemoRepository memoRepository;
-
-    // 만들어진 MemoRepository를 파라미터로 전달받아서 집어 넣는다.
+    // 만들어진 MemoRepository 를 파라미터로 전달받아서 집어 넣는다.
+    // MemoRepository 를 주입받으려면 그 주입하는 생성자나에 @Autowired 를 달아야 한다. (생략가능 -생성자 선언 1개일 때만)
+    @Autowired
     public MemoService(MemoRepository memoRepository) {
         // 여기서 MemoRepository 를 딱 하나 만들어 준다.
         // MemoService가 MemoRepository를 직접 만들고 있다.(제어의 흐름 : MemoService >MemoRepository)

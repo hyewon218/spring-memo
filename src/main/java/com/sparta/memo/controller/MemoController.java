@@ -3,7 +3,6 @@ package com.sparta.memo.controller;
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.service.MemoService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,16 +11,20 @@ import java.util.List;
 @RequestMapping("/api")
 public class MemoController {
 // MemoController > MemoService > MemoRepository
+
+    // MemoService Bean 객체 받아서 사용하고 있음.
     private final MemoService memoService;
 
     // Controller의 역할 : 클라이언트의 요청을 받고 클라이언트의 요청을 Service에 전달한다.
     // 받아 온 데이터가 있다면 그 데이터도 함께 전달한다.
-    // 만들어진 MemoService 를 외부에서 파라미터로 전달받아서 집어 넣는다.
+    // 만들어진 MemoService 객체를 외부에서 파라미터로 전달받아서 집어 넣는다.
+    // -> DI(의존성 주입)를 하기 위해서는 객체의 생성이 우선이 되어야 한다.
     public MemoController(MemoService memoService) {
         // MemoController가 MemoController 직접 만들고 있다.(제어의 흐름 : MemoController > memoService)
         // this.memoService = new MemoService(jdbcTemplate);
 
         // 제어의 흐름 : memoService > MemoController
+        // memoService를 받아서 필드에 넣어주고 있다.
         this.memoService = memoService;
     }
 
